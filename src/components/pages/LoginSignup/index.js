@@ -15,46 +15,62 @@ import {
   IonButton
 } from "@ionic/react";
 import React, { useState, useRef } from "react";
-import { auth } from "../../../firebase";
+import { auth, db } from "../../../firebase";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { setDoc, doc, getDocs } from "firebase/firestore";
 import AuthDetails from "../AuthDetails";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import { collection, query, where } from "firebase/firestore";
 
 export default function LoginSignup () {
   const [loginState, setLoginState] = useState(true)
+  const [navigateBool, setNavigateBool] = useState(false)
   const emailRef = useRef();
   const passwordRef = useRef();
   const usernameRef = useRef();
-  // const { signup } = useAuth()
 
-  const handleLogin = (e) => {
-    e.preventDefault()
-    console.log({email: emailRef.current.value, password: passwordRef.current.value})
-    signInWithEmailAndPassword(auth, emailRef.current.value, passwordRef.current.value)
-      .then((userCredential) => {
-        console.log(userCredential)
-        window.location.assign('/')
-      })
-      .catch((err) => {
-        console.error(err)
-      })
+  const addressesRef = collection(db, 'addresses')
+  const q = query(addressesRef)
+
+  const getAddresses = async() => {
+    const results = await getDocs(q)
+    console.log(results)
   }
 
-  const handleSignUp = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
-    console.log({username: usernameRef.current.value, email: emailRef.current.value, password: passwordRef.current.value})
-    createUserWithEmailAndPassword(auth, emailRef.current.value, passwordRef.current.value)
-      .then((userCredential) => {
-        console.log(userCredential)
-        window.location.assign('/')
-      })
-      .catch((err) => {
+
+    try {
+      const credentials = await signInWithEmailAndPassword(auth, emailRef.current.value, passwordRef.current.value)
+
+      setNavigateBool(true)
+    } catch(err) {
         console.error(err)
-      })
+    }
+  }
+
+  const handleSignUp = async (e) => {
+    e.preventDefault()
+
+    try {
+      const credentials = await createUserWithEmailAndPassword(auth, emailRef.current.value, passwordRef.current.value)
+
+      const newUser = {
+        username: usernameRef.current.value,
+        email: emailRef.current.value
+      }
+      await setDoc(doc(db, 'users', credentials.user.uid), {...newUser})
+
+      setNavigateBool(true)
+    } catch(err) {
+        console.error(err)
+    }
   }
 
   return(
     <IonPage>
+      {navigateBool ? 
+        <Navigate to='/'/> : null}
       <IonContent>
         <IonCard>
           <IonCardHeader>
@@ -63,6 +79,7 @@ export default function LoginSignup () {
 
           <IonCardContent>
             <AuthDetails />
+            <Link to='/'>Home</Link>
             {loginState ?
             <form onSubmit={handleLogin}>
               {/* Login Form */}

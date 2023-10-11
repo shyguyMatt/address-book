@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { auth } from '../../../firebase';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { Link } from 'react-router-dom';
+import './styles.scss'
+
 
 export default function AuthDetails() {
   const [authUser, setAuthUser] = useState(null);
 
   useEffect(() => {
-    const listen = onAuthStateChanged(auth, (user) => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
       if (user) {
         setAuthUser(user)
       } else {
@@ -23,7 +26,7 @@ export default function AuthDetails() {
   }
 
   return (
-    <div>
+    <div id='status'>
       { authUser ? 
       <>
         <p>{`Signed In as ${authUser.email}`}</p>
