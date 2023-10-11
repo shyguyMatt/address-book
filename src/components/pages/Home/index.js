@@ -9,12 +9,18 @@ import {
   IonButton,
   useIonViewWillEnter,
   IonRow,
-  IonCol
+  IonCol,
+  IonFab,
+  IonFabButton,
+  IonIcon
 } from "@ionic/react";
+
+import { add } from 'ionicons/icons';
 
 import { GoogleMap } from '@capacitor/google-maps';
 
 import './styles.scss';
+import AuthDetails from '../AuthDetails';
 
 export default function Home() {
   const apiKey = 'AIzaSyDPkGr00qqmgiTFNjAUj7iwCKxshazgKNI';
@@ -41,11 +47,6 @@ export default function Home() {
     })
   }
 
-  // useIonViewWillEnter(() => {
-  //   console.log("test");
-  //   createMap();
-  // });
-
   return(
     <IonPage>
       <IonHeader>
@@ -54,13 +55,12 @@ export default function Home() {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonDatetime/>
-        <IonRow>
-          <IonCol size='12'>
-            <capacitor-google-map ref={mapRef} id='map'></capacitor-google-map>
-          </IonCol>
-        </IonRow>
-        <button onClick={createMap}>createMap</button>
+        <AuthDetails />
+        <IonFab slot='fixed' vertical='bottom' horizontal='end'>
+          <IonFabButton>
+            <IonIcon icon={add}></IonIcon>
+          </IonFabButton>
+        </IonFab>
       </IonContent>
     </IonPage>
   )

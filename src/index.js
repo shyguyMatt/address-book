@@ -13,6 +13,8 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import Home from './components/pages/Home';
 import Addresses from './components/pages/Address List';
+import AddAddress from './components/pages/AddAddress';
+import LoginSignup from './components/pages/LoginSignup';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -22,6 +24,7 @@ root.render(
           <Route path='/' element={<App/>}>
             <Route path='' element={<Home/>}/>
             <Route path='/addresses' element={<Addresses/>}/>
+            <Route path='/login' element={<LoginSignup/>}/>
             <Route 
               path="*"
               element={

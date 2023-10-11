@@ -8,15 +8,18 @@ import Addresses from './components/pages/Address List';
 import { useState } from 'react';
 import NavBar from './components/elements/Navbar';
 import { Outlet } from 'react-router-dom';
+import AuthDetails from './components/pages/AuthDetails';
 
 setupIonicReact();
 
 function App() {
 
   return (
-    <div className="App" style={{ paddingTop: "env(safe-area-inset-top)"}}>
-      <Outlet></Outlet>
-    </div>
+    // <AuthProvider>
+      <div className="App" style={{ paddingTop: "env(safe-area-inset-top)"}}>
+        <Outlet></Outlet>
+      </div>
+    // </AuthProvider>
   );
 }
 
