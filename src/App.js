@@ -1,18 +1,21 @@
-import logo from './logo.svg';
 import './App.css';
 
+import '@ionic/react/css/core.css';
+import { setupIonicReact } from '@ionic/react';
+
+import Home from './components/pages/Home';
+import Addresses from './components/pages/Address List';
+import { useState } from 'react';
+import NavBar from './components/elements/Navbar';
+import { Outlet } from 'react-router-dom';
+
+setupIonicReact();
+
 function App() {
+
   return (
-    <div className="App">
-      <iframe
-        width="600"
-        height="450"
-        loading="lazy"
-        allowfullscreen
-        referrerpolicy="no-referrer-when-downgrade"
-        src="https://www.google.com/maps/embed/v1/place?key=[API KEY]
-          &q=Space+Needle,Seattle+WA">
-      </iframe>
+    <div className="App" style={{ paddingTop: "env(safe-area-inset-top)"}}>
+      <Outlet></Outlet>
     </div>
   );
 }

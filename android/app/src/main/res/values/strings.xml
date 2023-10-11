@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">address-book</string>
+    <string name="title_activity_main">address-book</string>
+    <string name="package_name">com.shyguymatt.addressbook</string>
+    <string name="custom_url_scheme">com.shyguymatt.addressbook</string>
+</resources>

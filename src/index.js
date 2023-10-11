@@ -1,13 +1,38 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+
 import './index.css';
+import '@ionic/react/css/normalize.css';
+import '@ionic/react/css/structure.css';
+import '@ionic/react/css/typography.css';
+
+import { IonApp, IonRouterOutlet } from '@ionic/react';
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import Home from './components/pages/Home';
+import Addresses from './components/pages/Address List';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<App/>}>
+            <Route path='' element={<Home/>}/>
+            <Route path='/addresses' element={<Addresses/>}/>
+            <Route 
+              path="*"
+              element={
+                <main>
+                  <p>There's nothing here!</p>
+                  <Link to='/'>Back Home!</Link>
+                </main>
+            }/>
+          </Route>
+        </Routes>
+      </BrowserRouter>
   </React.StrictMode>
 );
 
