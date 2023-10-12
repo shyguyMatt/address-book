@@ -1,4 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import { useOutletContext } from 'react-router-dom';
+
+// Import Styles
 import {
   IonContent,
   IonDatetime,
@@ -20,59 +23,44 @@ import {
   IonList,
   IonItem
 } from "@ionic/react";
-
 import { add } from 'ionicons/icons';
+import './styles.scss';
+
 import { GoogleMap } from '@capacitor/google-maps';
-import { auth, db } from '../../../firebase';
-import { signOut } from 'firebase/auth';
-import { Link } from 'react-router-dom';
-import { collection, query, where } from "firebase/firestore";
-import { setDoc, doc, getDocs } from "firebase/firestore";
 
 import AuthDetails from '../AuthDetails';
 
-import './styles.scss';
+
 
 export default function Home() {
-  // const apiKey = 'AIzaSyDPkGr00qqmgiTFNjAUj7iwCKxshazgKNI';
-  // let newMap;
-  // const mapRef = useRef(null)
+  const apiKey = 'AIzaSyDPkGr00qqmgiTFNjAUj7iwCKxshazgKNI';
+  let newMap;
+  const mapRef = useRef(null)
 
-  // const [mapConfig, setMapConfig] = useState({
-  //   zoom: 12,
-  //   center: {
-  //     lat: 33.6,
-  //     lng: -117.9
-  //   }
-  // })
+  const [mapConfig, setMapConfig] = useState({
+    zoom: 12,
+    center: {
+      lat: 33.6,
+      lng: -117.9
+    }
+  })
 
-  // const createMap = async () => {
-  //   if(!mapRef.current) return;
+  const createMap = async () => {
+    if(!mapRef.current) return;
 
-  //   newMap = await GoogleMap.create({
-  //     id: 'google-map',
-  //     element: document.getElementById('map'),
-  //     apiKey: apiKey,
-  //     config: mapConfig,
-  //     forceCreate: true
-  //   })
-  // }
-  const [addresses, setAddresses] = useState([])
-
-  const addressesRef = collection(db, 'addresses')
-  const q = query(addressesRef)
-
-  const getAddresses = async() => {
-    let tempArray = [];
-    const results = await getDocs(q)
-    results.forEach((doc) => {
-      tempArray.push(doc.data())
+    newMap = await GoogleMap.create({
+      id: 'google-map',
+      element: document.getElementById('map'),
+      apiKey: apiKey,
+      config: mapConfig,
+      forceCreate: true
     })
-    setAddresses(tempArray);
   }
+  const [userData, setUserData] = useOutletContext();
 
-  console.log(addresses)
-
+  const logUserData = () => {
+    console.log(userData);
+  }
 
   return(
     <IonPage>
@@ -83,8 +71,8 @@ export default function Home() {
       </IonHeader>
       <IonContent fullscreen>
       <AuthDetails />
-      <button onClick={getAddresses}>Get Addresses</button>
-      {addresses.map((address) => {
+      <button onClick={logUserData}>Log</button>
+      {/* {addresses.map((address) => {
         return(
           <IonCard>
             <IonCardHeader>
@@ -104,12 +92,7 @@ export default function Home() {
             </IonCardContent>
           </IonCard>
         )
-      })}
-        <IonFab slot='fixed' vertical='bottom' horizontal='end'>
-          <IonFabButton>
-            <IonIcon icon={add}></IonIcon>
-          </IonFabButton>
-        </IonFab>
+      })} */}
       </IonContent>
     </IonPage>
   )

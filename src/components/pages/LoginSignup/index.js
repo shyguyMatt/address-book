@@ -56,6 +56,7 @@ export default function LoginSignup () {
       const credentials = await createUserWithEmailAndPassword(auth, emailRef.current.value, passwordRef.current.value)
 
       const newUser = {
+        uid: credentials.user.uid,
         username: usernameRef.current.value,
         email: emailRef.current.value
       }

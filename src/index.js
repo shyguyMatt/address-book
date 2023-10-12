@@ -15,6 +15,7 @@ import Home from './components/pages/Home';
 import Addresses from './components/pages/Address List';
 import AddAddress from './components/pages/AddAddress';
 import LoginSignup from './components/pages/LoginSignup';
+import GoogleMaps from './components/pages/GoogleMaps';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -25,6 +26,7 @@ root.render(
             <Route path='' element={<Home/>}/>
             <Route path='/addresses' element={<Addresses/>}/>
             <Route path='/login' element={<LoginSignup/>}/>
+            <Route path='/map' element={<GoogleMaps/>}/>
             <Route 
               path="*"
               element={
