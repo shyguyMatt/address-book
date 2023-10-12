@@ -4,13 +4,9 @@ import React, { useState, useRef} from 'react';
 import './styles.scss'
 
 import { GoogleMap } from '@capacitor/google-maps';
+import { IonContent, IonPage } from '@ionic/react';
 
 export default function GoogleMaps() {
-
-  const apiKey = 'AIzaSyDPkGr00qqmgiTFNjAUj7iwCKxshazgKNI';
-  let newMap;
-  const mapRef = useRef(null)
-
   const [mapConfig, setMapConfig] = useState({
     zoom: 12,
     center: {
@@ -20,20 +16,21 @@ export default function GoogleMaps() {
   })
 
   const createMap = async () => {
-    if(!mapRef.current) return;
-
-    newMap = await GoogleMap.create({
+    const newMap = await GoogleMap.create({
       id: 'google-map',
       element: document.getElementById('map'),
-      apiKey: apiKey,
+      apiKey: process.env.REACT_APP_GOOGLE_MAPS_KEY,
       config: mapConfig,
-      forceCreate: true
+      forceCreate: false
     })
   }
 
   return(
-    <div>
-      <capacitor-google-map id="map" />
-    </div>
+    <IonPage>
+      <IonContent>
+        <button onClick={createMap}>create map</button>
+        <capacitor-google-map id="map" />        
+      </IonContent>
+    </IonPage>
   )
 }
