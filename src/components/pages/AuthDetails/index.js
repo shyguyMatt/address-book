@@ -1,27 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { auth } from '../../../firebase';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
-import { Link } from 'react-router-dom';
+import { Link, useOutletContext } from 'react-router-dom';
+import UserContext from '../../../contexts/AuthContext';
 import './styles.scss'
 
-
+// Temporary Document for authentication details
 export default function AuthDetails() {
-  const [authUser, setAuthUser] = useState(null);
-
-  useEffect(() => {
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setAuthUser(user)
-      } else {
-        setAuthUser(null);
-      }
-    })
-  }, [])
+  const { userData, authUser } = useContext(UserContext)
 
   const userSignOut = () => {
     signOut(auth).then(() => {
-      console.log('logged out')
+
     }).catch(err => console.error(err))
   }
 

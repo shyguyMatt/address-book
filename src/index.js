@@ -6,14 +6,11 @@ import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
 import '@ionic/react/css/typography.css';
 
-import { IonApp, IonRouterOutlet } from '@ionic/react';
-
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import Home from './components/pages/Home';
 import Addresses from './components/pages/Address List';
-import AddAddress from './components/pages/AddAddress';
 import LoginSignup from './components/pages/LoginSignup';
 import GoogleMaps from './components/pages/GoogleMaps';
 

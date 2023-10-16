@@ -1,36 +1,69 @@
-// import React, { useContext, useState, useEffect } from 'react';
-// import { auth } from '../firebase'
+import { createContext, useContext, useEffect, useState } from "react";
+import { auth, db } from "../firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
-// const AuthContext = React.createContext()
+const AuthContext = createContext();
+const UserContext = createContext();
 
-// export function useAuth() {
-//   return useContext(AuthContext)
-// }
+// get current user and provide it to user Provider
+export function AuthProvider({ children }) {
+  const [authUser, setAuthUser] = useState('initializing');
 
-// export function AuthProvider({ children }) {
-//   const [currentUser, setCurrentUser] = useState();
+  onAuthStateChanged(auth, (user) => {
+    if(user) {
+      setAuthUser(user)
+    } else {
+      setAuthUser(null)
+    }
+  })
 
-//   function signup(email, password) {
-//     return auth.createUserWithEmailAndPassword(email, password)
-//   }
+  // Rendering  
+  if(authUser === 'initializing') return <div>Loading...</div>
 
-//   useEffect(() => {
-//     const unsubscribe = auth.onAuthStateChanged(user => {
-//       setCurrentUser(user)
-//     })    
+  return (
+    <AuthContext.Provider value={{ authUser }}>
+      <UserProvider>
+        {children} 
+      </UserProvider>
+    </AuthContext.Provider>
+  )
+}
 
-//     return unsubscribe
-//   }, [])
+// Fetch userData from database and make it available
+function UserProvider({ children }) {
+  const { authUser } = useContext(AuthContext);
+  const [userData, setUserData] = useState('loading');
 
+  useEffect(() => {
+    getUserData()
+  }, [authUser])
 
-//   const value = {
-//     currentUser,
-//     signup
-//   }
+  const getUserData = async() => {
+    if(authUser === null) {
+      setUserData(null)
+    }
+    try {
+      const usersRef = collection(db, 'users');
+      const q = query(usersRef, where('uid', '==', authUser.uid));
+      let results = await getDocs(q);
+      results.forEach((doc) => {
+        setUserData(doc.data())
+      })
 
-//   return (
-//     <AuthContext.Provider value={value}>
-//       {children}
-//     </AuthContext.Provider>
-//   )
-// }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  // Rendering
+  if(userData === 'loading') return <div>Loading Data</div>
+
+  return (
+    <UserContext.Provider value={{ userData, authUser, getUserData }}>
+      {children}
+    </UserContext.Provider>
+  )
+}
+
+export default UserContext;

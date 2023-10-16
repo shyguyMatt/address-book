@@ -19,12 +19,14 @@ import { auth, db } from "../../../firebase";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { setDoc, doc, getDocs } from "firebase/firestore";
 import AuthDetails from "../AuthDetails";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useOutletContext } from "react-router-dom";
 import { collection, query, where } from "firebase/firestore";
 
 export default function LoginSignup () {
   const [loginState, setLoginState] = useState(true)
   const [navigateBool, setNavigateBool] = useState(false)
+  
+  const userData = useOutletContext()
   const emailRef = useRef();
   const passwordRef = useRef();
   const usernameRef = useRef();
