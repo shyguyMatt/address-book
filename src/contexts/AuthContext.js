@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, onSnapshot, query, where, doc  } from "firebase/firestore";
 
 const AuthContext = createContext();
 const UserContext = createContext();
@@ -38,6 +38,10 @@ function UserProvider({ children }) {
   useEffect(() => {
     getUserData()
   }, [authUser])
+
+  onSnapshot(doc(db, 'users', authUser.uid), (doc) => {
+    setUserData(doc.data())
+  })
 
   const getUserData = async() => {
     if(authUser === null) {
