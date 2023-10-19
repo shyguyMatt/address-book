@@ -12,13 +12,17 @@ import {
   IonCardTitle,
   IonCardContent,
   IonList,
-  IonItem
+  IonItem,
+  IonButton,
+  IonModal,
+  IonLabel,
+  IonInput
 } from '@ionic/react';
 import UserContext from '../../../contexts/AuthContext';
 
 export default function Addresses() {
   const [addresses, setAddresses] = useState([]);
-  const { userData } = useContext(UserContext)
+  const { userData } = useContext(UserContext);
 
   useEffect(() => {
     getAddresses()
@@ -27,7 +31,7 @@ export default function Addresses() {
   const getAddresses = async() => {
     try {
       const addressesRef = collection(db, 'addresses');
-      const q =  query(addressesRef, where('uid', 'in', userData.addresses));
+      const q =  query(addressesRef, where('id', 'in', userData.addresses));
       let results = await getDocs(q);
       let temp = [];
       results.forEach((doc) => {
@@ -64,7 +68,6 @@ export default function Addresses() {
                 <IonItem>{address.country}</IonItem>
                 <IonItem>{address.postalcode}</IonItem>             
               </IonList>
-
             </IonCardContent>
           </IonCard>
         )

@@ -31,14 +31,6 @@ export default function LoginSignup () {
   const passwordRef = useRef();
   const usernameRef = useRef();
 
-  const addressesRef = collection(db, 'addresses')
-  const q = query(addressesRef)
-
-  const getAddresses = async() => {
-    const results = await getDocs(q)
-    console.log(results)
-  }
-
   const handleLogin = async (e) => {
     e.preventDefault()
 
